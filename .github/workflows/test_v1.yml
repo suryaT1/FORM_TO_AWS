@@ -9,6 +9,9 @@ jobs:
       - name: checking out repository
         uses: actions/checkout@v4
 
+      - name: list out the files
+        run: ls -la
+
       - name: Configure AWS Credentials
         run: |
           echo "AWS_ACCESS_KEY_ID=${{ secrets.ACCESS_KEY }}" >> $GITHUB_ENV
@@ -26,9 +29,12 @@ jobs:
 
       - name: terraform init
         run: terraform init
+        working-directory: .
 
       - name: terraform validate
         run: terraform validate
+        working-directory: .
 
       - name: terraform plan
         run: terraform plan
+        working-directory: .
