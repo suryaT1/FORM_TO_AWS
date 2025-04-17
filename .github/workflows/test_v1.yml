@@ -19,6 +19,7 @@ jobs:
 
   import-phase:
     runs-on: ubuntu-latest
+    needs: build-phase
     steps:
       - name: importing terraform into runner
         uses: hashicorp/setup-terraform@v1
