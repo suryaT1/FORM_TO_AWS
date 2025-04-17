@@ -11,7 +11,7 @@ variable "vpc" {
         default = "t2.micro"
     }
     variable "region" {
-        default = "us-east-1"
+        default = "ap-south-1"
     }
     variable "ami_id" {
         default = "ami-0e35ddab05955cf57"
