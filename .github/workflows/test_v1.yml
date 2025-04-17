@@ -1,25 +1,23 @@
-###
-
 name: first cicd workflow
-on: 
-   [push, workflow_dispatch]
-   
+on:
+  [push, workflow_dispatch]
+
 jobs:
-   build-phase:
+  build-phase:
     runs-on: ubuntu-latest
     steps:
-     - name: checking out repository
-       uses: actions/checkout@v4
+      - name: checking out repository
+        uses: actions/checkout@v4
 
-     - name: Configure AWS Credentials
-       run: |
+      - name: Configure AWS Credentials
+        run: |
           echo "AWS_ACCESS_KEY_ID=${{ secrets.ACCESS_KEY }}" >> $GITHUB_ENV
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.SECRET_KEY }}" >> $GITHUB_ENV
 
-     - name: aws configuration completed
-       run: echo "aws configuration completed successfully "
+      - name: aws configuration completed
+        run: echo "aws configuration completed successfully"
 
-   import-phase:
+  import-phase:
     runs-on: ubuntu-latest
     steps:
       - name: importing terraform into runner
@@ -32,5 +30,4 @@ jobs:
         run: terraform validate
 
       - name: terraform plan
-        run: terraform plan 
-    
+        run: terraform plan
