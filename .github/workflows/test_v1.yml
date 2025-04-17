@@ -25,6 +25,11 @@ jobs:
   import-phase:
     runs-on: ubuntu-latest
     needs: build-phase
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_KEY }}
+      AWS_DEFAULT_REGION: ap-south-1
+      
     steps:
       - name: Checking out repository
         uses: actions/checkout@v4
@@ -42,6 +47,10 @@ jobs:
 
       - name: Terraform Plan
         run: terraform plan
+        working-directory: .
+
+      - name: Terraform appply
+        run: terraform apply -auto-approve
         working-directory: .
 
   cost-estimation:
