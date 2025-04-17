@@ -5,12 +5,12 @@ provider "aws" {
 }
 
 resource "aws_instance" "aws_server" {
-  ami = var.ami_id
-  instance_type = var.instance_type
-  key_name = var.key_name
-  security_groups = [var.sg_grp]
-  vpc_security_group_ids = [var.vpc]
+  ami                  = var.ami_id
+  instance_type        = var.instance_type
+  key_name             = var.key_name
+  vpc_security_group_ids = [var.sg_grp]  # Ensure this is the security group ID
+  subnet_id            = var.subnet_id   # Ensure subnet is defined as well if needed
   tags = {
-    name= var.server_name
+    Name = var.server_name
   }
 }
