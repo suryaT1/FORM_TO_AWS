@@ -1,11 +1,11 @@
 variable "vpc" {
-     default = "126252552"
+     default = "1111111111111"
     }
     variable "sg_grp" {
-     default = "allow-all"
+     default = "allow-all-groups"
     }
     variable "server_name" {
-        default = "abc"
+        default = "surya"
     }
     variable "instance_type" {
         default = "t2.micro"
@@ -14,8 +14,8 @@ variable "vpc" {
         default = "us-east-1"
     }
     variable "ami_id" {
-        default = "abc"
+        default = "ami-123456789"
     }
     variable "key_name" {
-        default = "abc"
+        default = "surya-cicd"
     }
