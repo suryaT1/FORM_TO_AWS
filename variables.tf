@@ -1,5 +1,5 @@
-variable "vpc" {
-     default = "vpc-0239f65a46ffe8faa"
+variable "subnet_id" {
+     default = ""
     }
     variable "sg_grp" {
      default = "sg-0e53a923e273d3eee"
