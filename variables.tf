@@ -17,5 +17,5 @@ variable "subnet_id" {
         default = "ami-0e35ddab05955cf57"
     }
     variable "key_name" {
-        default = "key-0b9502de2f78a17be"
+        default = "vpc_concepts"
     }
