@@ -75,4 +75,6 @@ jobs:
         uses: infracost/actions/setup@v2
 
       - name: Estimate Cost from tfstate
+        env:
+           INFRACOST_API_KEY: "ico-w8ZdnDtvufOiEllTSvZr7bZRg3zqw66G"
         run: infracost breakdown --path=terraform.tfstate --format=table
