@@ -73,16 +73,18 @@ jobs:
 
       - name: Create Infracost config file
         run: |
-          echo 'version: 0.1
-projects:
-  - name: my-project
-    terraform_state:
-      path: terraform.tfstate' > infracost.yml
+          cat <<EOF > infracost.yml
+          version: 0.1
+          projects:
+            - name: my-project
+              terraform_state:
+                path: terraform.tfstate
+          EOF
 
-  - name: Install Infracost
-    uses: infracost/actions/setup@v2
+      - name: Install Infracost
+        uses: infracost/actions/setup@v2
 
-  - name: Estimate Cost from tfstate
-    env:
-      INFRACOST_API_KEY: "ico-w8ZdnDtvufOiEllTSvZr7bZRg3zqw66G"
-      run: infracost breakdown --config-file=infracost.yml --format=table
+      - name: Estimate Cost from tfstate
+        env:
+          INFRACOST_API_KEY: "ico-w8ZdnDtvufOiEllTSvZr7bZRg3zqw66G"
+        run: infracost breakdown --config-file=infracost.yml --format=table
