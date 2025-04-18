@@ -60,15 +60,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup AWS CLI
+      - name: Configure AWS CLI
         run: |
-          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-          unzip awscliv2.zip
-          sudo ./aws/install
-          aws --version
+          aws --version  # Optional: Check version
           aws configure set aws_access_key_id ${{ secrets.ACCESS_KEY }}
           aws configure set aws_secret_access_key ${{ secrets.SECRET_KEY }}
-          aws configure set region us-east-1
+          aws configure set region ap-south-1
+
 
       - name: Download tfstate from S3
         run: aws s3 cp s3://testingtostoretfstatefile/terraform/state/terraform.tfstate terraform.tfstate
