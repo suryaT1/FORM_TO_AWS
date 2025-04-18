@@ -1,5 +1,5 @@
 variable "subnet_id" {
-     default = ""
+     default = "subnet-0ca3513896ecf963f"
     }
     variable "sg_grp" {
      default = "sg-0e53a923e273d3eee"
