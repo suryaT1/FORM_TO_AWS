@@ -49,32 +49,40 @@ jobs:
         run: terraform plan
         working-directory: .
 
-      - name: Terraform appply
+      - name: Terraform Apply
         run: terraform apply -auto-approve
         working-directory: .
 
   cost-estimation:
     runs-on: ubuntu-latest
     needs: import-phase
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_KEY }}
+      AWS_DEFAULT_REGION: ap-south-1
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Configure AWS CLI
-        run: |
-          aws --version  # Optional: Check version
-          aws configure set aws_access_key_id ${{ secrets.ACCESS_KEY }}
-          aws configure set aws_secret_access_key ${{ secrets.SECRET_KEY }}
-          aws configure set region ap-south-1
-
+      - name: Install AWS CLI (if needed)
+        run: sudo apt-get install -y awscli
 
       - name: Download tfstate from S3
         run: aws s3 cp s3://testingtostoretfstatefile/terraform/state/terraform.tfstate terraform.tfstate
 
-      - name: Install Infracost
-        uses: infracost/actions/setup@v2
+      - name: Create Infracost config file
+        run: |
+          echo 'version: 0.1
+projects:
+  - name: my-project
+    terraform_state:
+      path: terraform.tfstate' > infracost.yml
 
-      - name: Estimate Cost from tfstate
-        env:
-           INFRACOST_API_KEY: "ico-w8ZdnDtvufOiEllTSvZr7bZRg3zqw66G"
-        run: infracost breakdown --path=terraform.tfstate --format=table
+  - name: Install Infracost
+    uses: infracost/actions/setup@v2
+
+  - name: Estimate Cost from tfstate
+    env:
+      INFRACOST_API_KEY: "ico-w8ZdnDtvufOiEllTSvZr7bZRg3zqw66G"
+      run: infracost breakdown --config-file=infracost.yml --format=table
