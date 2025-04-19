@@ -67,16 +67,19 @@ jobs:
 
       - name: Configure AWS CLI
         run: |
-           aws --version  # Optional: Check version
-           aws configure set aws_access_key_id ${{ secrets.ACCESS_KEY }}
-           aws configure set aws_secret_access_key ${{ secrets.SECRET_KEY }}
-           aws configure set region ap-south-1
+          aws --version
+          aws configure set aws_access_key_id ${{ secrets.ACCESS_KEY }}
+          aws configure set aws_secret_access_key ${{ secrets.SECRET_KEY }}
+          aws configure set region ap-south-1
 
       - name: Create terraformstate directory
         run: mkdir -p terraformstate
 
       - name: Download tfstate from S3
         run: aws s3 cp s3://testingtostoretfstatefile/terraform/state/terraform.tfstate terraformstate/terraform.tfstate
+
+      - name: List terraformstate folder
+        run: ls -la terraformstate
 
       - name: Create Infracost config file
         run: |
@@ -85,7 +88,7 @@ jobs:
           projects:
             - name: my-project
               terraform_state:
-                path: terraform.tfstate
+                path: terraformstate/terraform.tfstate
           EOF
 
       - name: Install Infracost
