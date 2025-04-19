@@ -87,8 +87,7 @@ jobs:
           version: 0.1
           projects:
             - name: my-project
-              terraform_state:
-                path: terraformstate/terraform.tfstate
+              path: terraformstate/terraform.tfstate
           EOF
 
       - name: Install Infracost
