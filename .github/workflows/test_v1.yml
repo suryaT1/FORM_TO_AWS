@@ -73,7 +73,7 @@ jobs:
            aws configure set region ap-south-1
 
       - name: Download tfstate from S3
-        run: aws s3 cp s3://testingtostoretfstatefile/terraform/state/terraform.tfstate terraform.tfstate
+        run: aws s3 cp s3://testingtostoretfstatefile/terraform/state/terraform.tfstate /terraformstate/terraform.tfstate
 
       - name: Create Infracost config file
         run: |
