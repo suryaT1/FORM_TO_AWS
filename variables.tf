@@ -11,11 +11,11 @@ variable "subnet_id" {
         default = "t2.micro"
     }
     variable "region" {
-        default = "ap-south-1"
+        default = "us-east-1"
     }
     variable "ami_id" {
         default = "ami-0e35ddab05955cf57"
     }
     variable "key_name" {
-        default = "vpc_concepts"
+        default = "key-0b9502de2f78a17be"
     }
