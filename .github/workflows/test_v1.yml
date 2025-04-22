@@ -4,7 +4,7 @@ on:
   [push, workflow_dispatch]
 
 jobs:
-  build-phase:
+  aws-config:
     runs-on: ubuntu-latest
     steps:
       - name: Checking out repository
@@ -22,9 +22,9 @@ jobs:
       - name: AWS configuration completed
         run: echo "AWS configuration completed successfully"
 
-  import-phase:
+  build-deploy:
     runs-on: ubuntu-latest
-    needs: build-phase
+    needs: aws-config
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_KEY }}
@@ -53,47 +53,3 @@ jobs:
         run: terraform apply -auto-approve
         working-directory: .
 
-  cost-estimation:
-    runs-on: ubuntu-latest
-    needs: import-phase
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_KEY }}
-      AWS_DEFAULT_REGION: ap-south-1
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Configure AWS CLI
-        run: |
-          aws --version
-          aws configure set aws_access_key_id ${{ secrets.ACCESS_KEY }}
-          aws configure set aws_secret_access_key ${{ secrets.SECRET_KEY }}
-          aws configure set region ap-south-1
-
-      - name: Create terraformstate directory
-        run: mkdir -p terraformstate
-
-      - name: Download tfstate from S3
-        run: aws s3 cp s3://testingtostoretfstatefile/terraform/state/terraform.tfstate terraformstate/terraform.tfstate
-
-      - name: List terraformstate folder
-        run: ls -la terraformstate
-
-      - name: Create Infracost config file
-        run: |
-          cat <<EOF > infracost.yml
-          version: 0.1
-          projects:
-            - name: my-project
-              path: terraformstate/terraform.tfstate
-          EOF
-
-      - name: Install Infracost
-        uses: infracost/actions/setup@v2
-
-      - name: Estimate Cost from tfstate
-        env:
-          INFRACOST_API_KEY: "ico-w8ZdnDtvufOiEllTSvZr7bZRg3zqw66G"
-        run: infracost breakdown --config-file=infracost.yml --format=table
